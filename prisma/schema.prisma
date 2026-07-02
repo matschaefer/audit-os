@@ -1,0 +1,169 @@
+// Synkro Audit OS — Phase 2 database schema.
+//
+// This schema mirrors the domain types in `types/audit.ts` one-to-one so
+// that swapping the Phase 1 in-memory demo data (`lib/demo-data.ts`) for a
+// real database later is a mechanical mapping exercise rather than a
+// redesign. It is not yet wired up to the application — Phase 1 runs
+// entirely on mock data.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Where a client audit sits in Synkro's internal engagement pipeline.
+enum AuditStatus {
+  DRAFT
+  IN_REVIEW
+  REPORT_READY
+  PROPOSAL_SENT
+}
+
+enum AutomationLevel {
+  MANUAL
+  PARTIALLY_AUTOMATED
+  AUTOMATED
+}
+
+enum RecommendationPriority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum ProcessMaturity {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum SalesPriority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+model Company {
+  id            String   @id @default(cuid())
+  name          String
+  location      String
+  website       String
+  employeeCount Int
+  contactName   String
+  contactRole   String
+  audits        Audit[]
+  createdAt     DateTime @default(now())
+
+  @@map("companies")
+}
+
+/// A single automation audit performed for a company. Lead-situation fields
+/// are stored inline (rather than in a separate table) because they are a
+/// point-in-time snapshot that only ever belongs to exactly one audit.
+model Audit {
+  id        String      @id @default(cuid())
+  status    AuditStatus @default(DRAFT)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId String
+
+  leadsPerMonth        Int
+  avgResponseTimeHours Float
+  viewingsPerMonth     Int
+  noShowRatePercent    Float
+  currentCrm           String
+  currentTools         String[]
+
+  // Derived scores, persisted so historical audits don't silently change
+  // if the scoring rules in lib/audit-scoring.ts evolve later.
+  processScore               Int
+  automationPotentialPercent Int
+
+  painPoints           AuditPainPoint[]
+  manualProcesses      ManualProcess[]
+  recommendations      Recommendation[]
+  roiCalculation       RoiCalculation?
+  consultantAssessment ConsultantAssessment?
+
+  @@map("audits")
+}
+
+/// One row per pain point in the catalogue for a given audit, so both
+/// selected and unselected answers are recoverable later (e.g. for
+/// analytics across audits).
+model AuditPainPoint {
+  id          String  @id @default(cuid())
+  audit       Audit   @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  auditId     String
+  /// Stable id from the PainPointId union in types/audit.ts (e.g. "messy_crm").
+  painPointId String
+  label       String
+  selected    Boolean @default(false)
+
+  @@unique([auditId, painPointId])
+  @@map("audit_pain_points")
+}
+
+model ManualProcess {
+  id               String          @id @default(cuid())
+  audit            Audit           @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  auditId          String
+  name             String
+  frequencyPerWeek Int
+  durationMinutes  Int
+  automationLevel  AutomationLevel
+
+  @@map("manual_processes")
+}
+
+model Recommendation {
+  id                  String                 @id @default(cuid())
+  audit               Audit                  @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  auditId             String
+  title               String
+  description         String
+  priority            RecommendationPriority
+  impactEstimate      String
+  relatedPainPointIds String[]
+
+  @@map("recommendations")
+}
+
+/// One-to-one with Audit: the ROI projection generated for that audit.
+model RoiCalculation {
+  id      String @id @default(cuid())
+  audit   Audit  @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  auditId String @unique
+
+  monthlyTimeSavingsHours Float
+  monthlyCostSavingsEur   Int
+  hourlyRateEur           Int
+  setupCostEstimateEur    Int
+  paybackPeriodMonths     Float
+  annualSavingsEur        Int
+
+  @@map("roi_calculations")
+}
+
+/// Internal, consultant-only notes and sales context for an audit — never
+/// shown on the client-facing report. One-to-one with Audit.
+model ConsultantAssessment {
+  id      String @id @default(cuid())
+  audit   Audit  @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  auditId String @unique
+
+  discoveryNotes       String
+  decisionMakerContext String
+  processMaturity      ProcessMaturity
+  salesPriority        SalesPriority
+  salesAngle           String
+  recommendedNextStep  String
+
+  @@map("consultant_assessments")
+}
