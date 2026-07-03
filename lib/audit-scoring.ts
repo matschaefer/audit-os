@@ -64,7 +64,16 @@ const AUTOMATABLE_SHARE: Record<ManualProcess["automationLevel"], number> = {
 };
 
 function clamp(value: number, min: number, max: number): number {
+  if (!Number.isFinite(value)) return min;
   return Math.min(max, Math.max(min, value));
+}
+
+function nonNegative(value: number): number {
+  return clamp(value, 0, Number.MAX_SAFE_INTEGER);
+}
+
+function crmFrictionScore(crm: CrmTool): number {
+  return CRM_FRICTION_SCORE[crm] ?? CRM_FRICTION_SCORE["Anderes CRM"];
 }
 
 function selectedPainPoints(painPoints: PainPoint[]): PainPoint[] {
@@ -96,7 +105,7 @@ export function calculateProcessScore(input: AuditScoringInput): number {
   else if (leadSituation.noShowRatePercent >= 10) score -= 6;
 
   // Spreadsheets-as-CRM is a strong structural signal of manual overhead.
-  score -= CRM_FRICTION_SCORE[leadSituation.currentCrm] * 15;
+  score -= crmFrictionScore(leadSituation.currentCrm) * 15;
 
   // Processes still run fully manually drag the score down further.
   const manualCount = manualProcesses.filter(
@@ -126,7 +135,7 @@ export function calculateAutomationPotential(
   potential += clamp(leadSituation.noShowRatePercent * 0.6, 0, 15);
 
   // Weak CRM tooling means more manual data entry and follow-up tracking.
-  potential += CRM_FRICTION_SCORE[leadSituation.currentCrm] * 15;
+  potential += crmFrictionScore(leadSituation.currentCrm) * 15;
 
   // Each confirmed pain point adds concrete, addressable potential.
   potential += Math.min(20, selectedPainPoints(painPoints).length * 3);
@@ -162,7 +171,8 @@ export function calculateMonthlyTimeSavings(
   const { leadSituation, manualProcesses } = input;
 
   const processSavingsHours = manualProcesses.reduce((total, process) => {
-    const weeklyMinutes = process.frequencyPerWeek * process.durationMinutes;
+    const weeklyMinutes =
+      nonNegative(process.frequencyPerWeek) * nonNegative(process.durationMinutes);
     const automatableMinutes =
       weeklyMinutes * AUTOMATABLE_SHARE[process.automationLevel];
     return total + (automatableMinutes * AVG_WEEKS_PER_MONTH) / 60;
@@ -171,16 +181,18 @@ export function calculateMonthlyTimeSavings(
   // Minutes of avoidable manual chasing per lead, capped at 15 min/lead,
   // scaling with how far the response time is from a healthy <1h baseline.
   const responsePenaltyMinutesPerLead = clamp(
-    leadSituation.avgResponseTimeHours * 0.5,
+    nonNegative(leadSituation.avgResponseTimeHours) * 0.5,
     0,
     15,
   );
   const leadResponseSavingsHours =
-    (leadSituation.leadsPerMonth * responsePenaltyMinutesPerLead) / 60;
+    (nonNegative(leadSituation.leadsPerMonth) * responsePenaltyMinutesPerLead) /
+    60;
 
   // Assume 10 minutes of manual re-engagement work saved per automated no-show follow-up.
   const noShowCount =
-    leadSituation.viewingsPerMonth * (leadSituation.noShowRatePercent / 100);
+    nonNegative(leadSituation.viewingsPerMonth) *
+    (clamp(leadSituation.noShowRatePercent, 0, 100) / 100);
   const noShowSavingsHours = (noShowCount * 10) / 60;
 
   const totalHours =

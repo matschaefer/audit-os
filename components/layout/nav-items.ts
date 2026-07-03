@@ -3,13 +3,12 @@ import {
   FileText,
   LayoutDashboard,
   Settings,
-  Sparkles,
 } from "lucide-react";
 
 export const NAV_ITEMS = [
   {
     href: "/dashboard",
-    label: "Workspace",
+    label: "Arbeitsbereich",
     icon: LayoutDashboard,
     isActive: (pathname: string) => pathname === "/dashboard",
   },
@@ -25,17 +24,10 @@ export const NAV_ITEMS = [
   },
   {
     href: "/reports",
-    label: "Reports",
+    label: "Berichte",
     icon: FileText,
     isActive: (pathname: string) =>
       pathname === "/reports" || pathname.endsWith("/report"),
-  },
-  {
-    href: "/demo",
-    label: "Demo-Kunde",
-    shortLabel: "Demo",
-    icon: Sparkles,
-    isActive: (pathname: string) => pathname === "/demo",
   },
   {
     href: "/settings",

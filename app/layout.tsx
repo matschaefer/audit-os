@@ -1,5 +1,9 @@
+import { ClerkProvider } from "@clerk/nextjs";
+import { deDE } from "@clerk/localizations";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
+import { CLERK_CONFIGURED } from "@/lib/app-env";
 import "./globals.css";
 
 const inter = Inter({
@@ -11,7 +15,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Synkro Audit OS",
   description:
-    "AI-powered automation audits for real estate agencies. Analyze processes, calculate ROI, and generate client-ready reports.",
+    "Interner Synkro-Arbeitsbereich für Automatisierungs-Audits, ROI-Bewertung und kundenfähige Berichtsvorschauen für Immobilienagenturen.",
 };
 
 export default function RootLayout({
@@ -19,11 +23,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
+  const app = (
     <html lang="de" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
       </body>
     </html>
+  );
+
+  // Only mount ClerkProvider when real keys are configured, so the app
+  // still builds and runs locally without committed secrets.
+  return CLERK_CONFIGURED ? (
+    <ClerkProvider localization={deDE}>{app}</ClerkProvider>
+  ) : (
+    app
   );
 }

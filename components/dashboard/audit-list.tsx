@@ -52,61 +52,89 @@ export function AuditList({ audits }: AuditListProps) {
     <Card className="overflow-hidden p-0">
       {/* Table layout on md+ screens */}
       <div className="hidden overflow-x-auto md:block">
-      <table className="w-full text-left text-sm">
-        <thead className="border-b border-border-subtle bg-surface-muted text-xs uppercase tracking-wide text-muted-foreground">
-          <tr>
-            <th className="px-6 py-3 font-medium">Kunde</th>
-            <th className="px-6 py-3 font-medium">Empfehlung</th>
-            <th className="px-6 py-3 font-medium">Status</th>
-            <th className="px-6 py-3 font-medium">Priorität</th>
-            <th className="px-6 py-3 font-medium">Automatisierungspotenzial</th>
-            <th className="px-6 py-3 font-medium">Geschätzte Einsparung/Monat</th>
-            <th className="px-6 py-3 font-medium">Erstellt am</th>
-            <th className="px-6 py-3" />
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-border-subtle">
-          {audits.map((audit) => (
-            <tr key={audit.id} className="transition-colors hover:bg-surface-muted/60">
-              <td className="px-6 py-4">
-                <p className="font-medium text-brand-dark">{audit.companyName}</p>
-                <p className="text-xs text-muted-foreground">{audit.companyLocation}</p>
-              </td>
-              <td className="px-6 py-4">
-                <Badge variant="primary">{audit.recommendedOfferName}</Badge>
-              </td>
-              <td className="px-6 py-4">
-                <Badge variant={statusBadgeVariant(audit.status)}>
-                  {AUDIT_STATUS_LABELS[audit.status]}
-                </Badge>
-              </td>
-              <td className="px-6 py-4">
-                <Badge variant={priorityBadgeVariant(audit.salesPriority)}>
-                  {SALES_PRIORITY_LABELS[audit.salesPriority]}
-                </Badge>
-              </td>
-              <td className="px-6 py-4">
-                <Badge variant={potentialBadgeVariant(audit.scores.automationPotentialPercent)}>
-                  {audit.scores.automationPotentialPercent}%
-                </Badge>
-              </td>
-              <td className="px-6 py-4 text-brand-dark">
-                {formatHours(audit.roiCalculation.monthlyTimeSavingsHours)} ·{" "}
-                {formatCurrencyEur(audit.roiCalculation.monthlyCostSavingsEur)}
-              </td>
-              <td className="px-6 py-4 text-muted-foreground">
-                {formatDate(audit.createdAt)}
-              </td>
-              <td className="px-6 py-4 text-right">
-                <Button href={`/audits/${audit.id}`} variant="ghost" size="sm">
-                  Öffnen
-                  <ArrowUpRight className="h-4 w-4" />
-                </Button>
-              </td>
+        <table className="w-full text-left text-sm">
+          <caption className="sr-only">Liste der vorbereiteten Kundenaudits</caption>
+          <thead className="border-b border-border-subtle bg-surface-muted text-xs uppercase tracking-wide text-muted-foreground">
+            <tr>
+              <th scope="col" className="px-6 py-3 font-medium">
+                Kunde
+              </th>
+              <th scope="col" className="px-6 py-3 font-medium">
+                Empfehlung
+              </th>
+              <th scope="col" className="px-6 py-3 font-medium">
+                Status
+              </th>
+              <th scope="col" className="px-6 py-3 font-medium">
+                Priorität
+              </th>
+              <th scope="col" className="px-6 py-3 font-medium">
+                Automatisierungspotenzial
+              </th>
+              <th scope="col" className="px-6 py-3 font-medium">
+                Geschätzte Einsparung/Monat
+              </th>
+              <th scope="col" className="px-6 py-3 font-medium">
+                Erstellt am
+              </th>
+              <th scope="col" className="px-6 py-3">
+                <span className="sr-only">Aktionen</span>
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-border-subtle">
+            {audits.map((audit) => (
+              <tr
+                key={audit.id}
+                className="transition-colors hover:bg-surface-muted/60"
+              >
+                <td className="px-6 py-4">
+                  <p className="font-medium text-brand-dark">
+                    {audit.companyName}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {audit.companyLocation}
+                  </p>
+                </td>
+                <td className="px-6 py-4">
+                  <Badge variant="primary">{audit.recommendedOfferName}</Badge>
+                </td>
+                <td className="px-6 py-4">
+                  <Badge variant={statusBadgeVariant(audit.status)}>
+                    {AUDIT_STATUS_LABELS[audit.status]}
+                  </Badge>
+                </td>
+                <td className="px-6 py-4">
+                  <Badge variant={priorityBadgeVariant(audit.salesPriority)}>
+                    {SALES_PRIORITY_LABELS[audit.salesPriority]}
+                  </Badge>
+                </td>
+                <td className="px-6 py-4">
+                  <Badge
+                    variant={potentialBadgeVariant(
+                      audit.scores.automationPotentialPercent,
+                    )}
+                  >
+                    {audit.scores.automationPotentialPercent}%
+                  </Badge>
+                </td>
+                <td className="px-6 py-4 text-brand-dark">
+                  {formatHours(audit.roiCalculation.monthlyTimeSavingsHours)} ·{" "}
+                  {formatCurrencyEur(audit.roiCalculation.monthlyCostSavingsEur)}
+                </td>
+                <td className="px-6 py-4 text-muted-foreground">
+                  {formatDate(audit.createdAt)}
+                </td>
+                <td className="px-6 py-4 text-right">
+                  <Button href={`/audits/${audit.id}`} variant="ghost" size="sm">
+                    Öffnen
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Stacked cards on small screens */}

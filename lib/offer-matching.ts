@@ -56,6 +56,7 @@ function manualProcessShare(audit: OfferMatchInput): number {
 }
 
 function clamp(value: number, min: number, max: number): number {
+  if (!Number.isFinite(value)) return min;
   return Math.min(max, Math.max(min, value));
 }
 
@@ -232,6 +233,10 @@ function matchCrmProzessoptimierung(audit: OfferMatchInput): OfferMatch {
   if (audit.businessContext.businessGoal === "full_process_optimization") {
     score += 25;
     reasons.push("Erklärtes Ziel ist eine vollständige Prozessoptimierung, nicht nur ein Einzelprozess.");
+  }
+  if (audit.businessContext.businessGoal === "reduce_admin_work") {
+    score += 20;
+    reasons.push("Erklärtes Ziel ist, Verwaltungsaufwand und operative Handarbeit zu reduzieren.");
   }
   if (audit.company.employeeCount >= 15) {
     score += 8;

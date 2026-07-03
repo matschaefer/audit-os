@@ -17,6 +17,10 @@ export function CompanySection({ company, onChange }: CompanySectionProps) {
     <Card>
       <CardHeader>
         <CardTitle>Unternehmensdaten</CardTitle>
+        <p className="text-sm text-muted-foreground">
+          Bitte nur fiktive Beispieldaten eingeben — keine echten Kunden- oder
+          Unternehmensdaten.
+        </p>
       </CardHeader>
       <CardContent className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
@@ -35,7 +39,7 @@ export function CompanySection({ company, onChange }: CompanySectionProps) {
             id="company-location"
             value={company.location}
             onChange={(e) => update("location", e.target.value)}
-            placeholder="Düsseldorf"
+            placeholder="Musterstadt"
             required
           />
         </div>
@@ -46,7 +50,7 @@ export function CompanySection({ company, onChange }: CompanySectionProps) {
             type="url"
             value={company.website}
             onChange={(e) => update("website", e.target.value)}
-            placeholder="https://beispiel-immobilien.de"
+            placeholder="https://example.com"
           />
         </div>
         <div className="space-y-2">
@@ -65,7 +69,7 @@ export function CompanySection({ company, onChange }: CompanySectionProps) {
             id="company-contact-name"
             value={company.contactName}
             onChange={(e) => update("contactName", e.target.value)}
-            placeholder="Katharina Vogt"
+            placeholder="Max Mustermann"
             required
           />
         </div>

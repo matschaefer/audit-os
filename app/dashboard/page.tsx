@@ -78,7 +78,7 @@ export default function WorkspacePage() {
 
   return (
     <AppShell
-      title="Workspace"
+      title="Arbeitsbereich"
       description="Interner Überblick über Kundenaudits und die Automatisierungs-Pipeline."
       actions={
         <Button href="/audits/new">
@@ -92,7 +92,7 @@ export default function WorkspacePage() {
           icon={PlusCircle}
           label="Kundenaudits"
           value={String(kpis.totalAudits)}
-          hint="Audits gesamt im Workspace"
+          hint="Audits gesamt im Arbeitsbereich"
         />
         <KpiCard
           icon={TrendingUp}

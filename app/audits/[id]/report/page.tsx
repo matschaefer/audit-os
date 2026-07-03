@@ -5,6 +5,7 @@ import {
   ClipboardList,
   Download,
   FileText,
+  Info,
   Lightbulb,
   Sparkles,
   Wallet,
@@ -18,6 +19,7 @@ import { ReportHeader } from "@/components/report/report-header";
 import { ReportSection } from "@/components/report/report-section";
 import { RoiTable } from "@/components/report/roi-table";
 import { DemoDataBadge } from "@/components/shared/demo-data-badge";
+import { DemoPrivacyNotice } from "@/components/shared/demo-privacy-notice";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DEMO_AUDIT_ID, getAuditById } from "@/lib/demo-data";
@@ -90,13 +92,25 @@ export default async function AuditReportPage({ params }: AuditReportPageProps) 
           <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
             Vorschau des kundenfähigen Reports · Erstellt von Synkro
           </span>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <DemoPrivacyNotice />
             {id === DEMO_AUDIT_ID ? <DemoDataBadge /> : null}
             <Badge variant={readiness.variant}>Status: {readiness.label}</Badge>
           </div>
         </div>
 
         <ReportHeader audit={audit} />
+
+        {id === DEMO_AUDIT_ID ? (
+          <div className="mt-6 flex items-start gap-3 rounded-lg border border-brand-accent/60 bg-brand-accent/10 px-5 py-4">
+            <Info className="mt-0.5 h-4 w-4 shrink-0 text-brand-primary" />
+            <p className="text-sm text-brand-dark">
+              Rheinblick Immobilien GmbH ist ein fiktiver Demo-Kunde. Alle
+              Daten, Kennzahlen, Ansprechpartner, Prozesse und Empfehlungen
+              dienen ausschließlich der Demonstration.
+            </p>
+          </div>
+        ) : null}
 
         <div className="mt-6 rounded-2xl border border-border-subtle bg-surface px-8 py-4 sm:px-12">
           <ReportSection icon={Sparkles} number="01" title="Executive Summary">
@@ -116,17 +130,23 @@ export default async function AuditReportPage({ params }: AuditReportPageProps) 
             number="03"
             title="Erkannte Prozessprobleme"
           >
-            <ul className="grid gap-3 sm:grid-cols-2">
-              {selectedPainPoints.map((point) => (
-                <li
-                  key={point.id}
-                  className="flex items-start gap-2 rounded-lg bg-surface-muted px-4 py-3 text-sm text-brand-dark"
-                >
-                  <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
-                  {point.label}
-                </li>
-              ))}
-            </ul>
+            {selectedPainPoints.length > 0 ? (
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {selectedPainPoints.map((point) => (
+                  <li
+                    key={point.id}
+                    className="flex items-start gap-2 rounded-lg bg-surface-muted px-4 py-3 text-sm text-brand-dark"
+                  >
+                    <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
+                    {point.label}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Im Audit wurden keine akuten Prozessprobleme markiert.
+              </p>
+            )}
           </ReportSection>
 
           <ReportSection
@@ -134,37 +154,44 @@ export default async function AuditReportPage({ params }: AuditReportPageProps) 
             number="04"
             title="Automatisierungspotenziale & empfohlene Maßnahmen"
           >
-            <div className="space-y-4">
-              {audit.recommendations.map((rec, index) => (
-                <div
-                  key={rec.id}
-                  className="rounded-lg border border-border-subtle p-4"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <p className="font-semibold text-brand-dark">
-                      {index + 1}. {rec.title}
+            {audit.recommendations.length > 0 ? (
+              <div className="space-y-4">
+                {audit.recommendations.map((rec, index) => (
+                  <div
+                    key={rec.id}
+                    className="rounded-lg border border-border-subtle p-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="font-semibold text-brand-dark">
+                        {index + 1}. {rec.title}
+                      </p>
+                      <Badge
+                        variant={
+                          rec.priority === "high"
+                            ? "danger"
+                            : rec.priority === "medium"
+                              ? "warning"
+                              : "neutral"
+                        }
+                      >
+                        Priorität: {PRIORITY_LABEL[rec.priority]}
+                      </Badge>
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {rec.description}
                     </p>
-                    <Badge
-                      variant={
-                        rec.priority === "high"
-                          ? "danger"
-                          : rec.priority === "medium"
-                            ? "warning"
-                            : "neutral"
-                      }
-                    >
-                      Priorität: {PRIORITY_LABEL[rec.priority]}
-                    </Badge>
+                    <p className="mt-2 text-sm font-medium text-brand-primary">
+                      {rec.impactEstimate}
+                    </p>
                   </div>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {rec.description}
-                  </p>
-                  <p className="mt-2 text-sm font-medium text-brand-primary">
-                    {rec.impactEstimate}
-                  </p>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Aus den erfassten Daten ergibt sich aktuell keine priorisierte
+                Automatisierungsmaßnahme.
+              </p>
+            )}
           </ReportSection>
 
           <ReportSection

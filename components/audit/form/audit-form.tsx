@@ -10,6 +10,7 @@ import {
   ConsultantContextSection,
   type ConsultantContextState,
 } from "@/components/audit/form/consultant-context-section";
+import { DemoFlowStepper } from "@/components/audit/form/demo-flow-stepper";
 import { LeadSituationSection } from "@/components/audit/form/lead-situation-section";
 import { ManualProcessesSection } from "@/components/audit/form/manual-processes-section";
 import { PainPointsSection } from "@/components/audit/form/pain-points-section";
@@ -123,6 +124,10 @@ export function AuditForm() {
 
   return (
     <div className="space-y-8">
+      <div className="rounded-xl border border-border-subtle bg-surface-muted px-4 py-3.5">
+        <DemoFlowStepper completed={result !== null} />
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-6">
         <CompanySection company={company} onChange={setCompany} />
         <LeadSituationSection
@@ -139,9 +144,9 @@ export function AuditForm() {
 
         <div className="flex flex-col items-start gap-3 rounded-xl border border-dashed border-brand-primary/40 bg-brand-primary/5 p-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">
-            Die Auswertung läuft vollständig über die lokale Synkro
-            Scoring-Engine — in dieser Phase-1-Version wird nichts gespeichert
-            oder extern gesendet.
+            Die Auswertung wird nur lokal für diese Demo berechnet — über die
+            reguläre Synkro Scoring-Engine, ohne dass etwas gespeichert oder
+            extern gesendet wird.
           </p>
           <Button type="submit" size="lg" className="shrink-0">
             <Sparkles className="h-4 w-4" />
@@ -157,6 +162,7 @@ export function AuditForm() {
             recommendations={result.recommendations}
             roiCalculation={result.roiCalculation}
             offerRecommendations={result.offerRecommendations}
+            painPoints={painPoints}
           />
         </div>
       ) : null}

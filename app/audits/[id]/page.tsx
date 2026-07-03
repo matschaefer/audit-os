@@ -63,9 +63,9 @@ export default async function AuditDetailPage({ params }: AuditDetailPageProps) 
           <CardContent className="flex items-start gap-3 py-4">
             <Info className="mt-0.5 h-4 w-4 shrink-0 text-brand-primary" />
             <p className="text-sm text-brand-dark">
-              {audit.company.name} ist ein fiktiver Demo-Kunde. Dieses Audit
-              veranschaulicht, wie Synkro Automatisierungs-Audits intern
-              vorbereitet und bewertet.
+              Rheinblick Immobilien GmbH ist ein fiktiver Demo-Kunde. Alle
+              Daten, Kennzahlen, Ansprechpartner, Prozesse und Empfehlungen
+              dienen ausschließlich der Demonstration.
             </p>
           </CardContent>
         </Card>
@@ -133,11 +133,24 @@ export default async function AuditDetailPage({ params }: AuditDetailPageProps) 
             Monat · {formatCurrencyEur(audit.roiCalculation.monthlyCostSavingsEur)} / Monat
           </p>
         </div>
-        <div className="grid gap-4 lg:grid-cols-2">
-          {audit.recommendations.map((rec, index) => (
-            <RecommendationCard key={rec.id} recommendation={rec} index={index} />
-          ))}
-        </div>
+        {audit.recommendations.length > 0 ? (
+          <div className="grid gap-4 lg:grid-cols-2">
+            {audit.recommendations.map((rec, index) => (
+              <RecommendationCard
+                key={rec.id}
+                recommendation={rec}
+                index={index}
+              />
+            ))}
+          </div>
+        ) : (
+          <Card>
+            <CardContent className="text-sm text-muted-foreground">
+              Aus den erfassten Daten ergibt sich aktuell keine priorisierte
+              Automatisierungsmaßnahme.
+            </CardContent>
+          </Card>
+        )}
       </div>
     </AppShell>
   );

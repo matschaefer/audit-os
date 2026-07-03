@@ -2,10 +2,11 @@
  * Realistic demo dataset for Synkro Audit OS.
  *
  * `DEMO_AUDIT_ID` ("demo-1", Rheinblick Immobilien GmbH) is the flagship
- * example used on `/demo` and in sales conversations — every number on its
- * report is designed to plausibly showcase Synkro's value. The remaining
- * audits exist to make the workspace feel like a real, multi-client
- * consulting pipeline with opportunities at different stages.
+ * example used on `/demo` and in sales conversations. Every company,
+ * person, URL and note in this file is fictional demo data for a public
+ * portfolio deployment. The remaining audits exist to make the workspace
+ * feel like a real, multi-client consulting pipeline with opportunities at
+ * different stages.
  *
  * All derived fields (scores, recommendations, ROI) are produced by the
  * same `runAuditScoring` pipeline used for real audits, so the demo data
@@ -94,10 +95,10 @@ const rheinblick = buildAudit({
   createdAt: "2026-06-18T09:00:00.000Z",
   company: {
     name: "Rheinblick Immobilien GmbH",
-    location: "Düsseldorf",
-    website: "https://rheinblick-immobilien.de",
+    location: "Musterstadt",
+    website: "https://rheinblick.example.com",
     employeeCount: 8,
-    contactName: "Katharina Vogt",
+    contactName: "Max Mustermann",
     contactRole: "Geschäftsführerin",
   },
   leadSituation: {
@@ -126,9 +127,9 @@ const rheinblick = buildAudit({
   ],
   consultantAssessment: {
     discoveryNotes:
-      "Erstgespräch mit Katharina Vogt (Geschäftsführerin) am 15. Juni. Team aus 8 Maklern, wachsendes Lead-Aufkommen über Portalanzeigen, aber kein strukturierter Erfassungsprozess. Leads werden in Excel geführt, Termine per Telefon und E-Mail abgestimmt.",
+      "Fiktives Demo-Erstgespräch mit Max Mustermann (Geschäftsführung) am 15. Juni. Team aus 8 Maklern, wachsendes Lead-Aufkommen über Portalanzeigen, aber kein strukturierter Erfassungsprozess. Leads werden in Excel geführt, Termine per Telefon und E-Mail abgestimmt.",
     decisionMakerContext:
-      "Katharina Vogt ist alleinige Geschäftsführerin und trifft die Entscheidung allein. Budgethoheit bestätigt — sie erwähnte, dass im Q3-Marketingbudget noch Spielraum für eine Tool-Investition besteht.",
+      "Max Mustermann ist fiktiver alleiniger Entscheider in diesem Demo-Szenario. Budgethoheit angenommen — im Q3-Demobudget besteht Spielraum für eine Tool-Investition.",
     processMaturity: "low",
     salesPriority: "high",
     salesAngle:
@@ -147,11 +148,11 @@ const seestadt = buildAudit({
   status: "report_ready",
   createdAt: "2026-05-04T09:00:00.000Z",
   company: {
-    name: "Seestadt Wohnimmobilien",
-    location: "Köln",
-    website: "https://seestadt-wohnimmobilien.de",
+    name: "Seestadt Demo-Immobilien GmbH",
+    location: "Beispielstadt",
+    website: "https://seestadt.example.com",
     employeeCount: 14,
-    contactName: "Jonas Reimann",
+    contactName: "Erika Musterfrau",
     contactRole: "Vertriebsleiter",
   },
   leadSituation: {
@@ -177,9 +178,9 @@ const seestadt = buildAudit({
   ],
   consultantAssessment: {
     discoveryNotes:
-      "Gespräch mit Jonas Reimann (Vertriebsleiter). Größeres Team (14 Mitarbeiter), nutzt bereits OnOffice mit ordentlichen Antwortzeiten. Die Schmerzpunkte liegen eher bei Lead-Priorisierung und No-Show-Nachfassung als beim reinen Volumen manueller Arbeit.",
+      "Fiktives Demo-Gespräch mit Erika Musterfrau (Vertriebsleitung). Größeres Team (14 Mitarbeiter), nutzt bereits OnOffice mit ordentlichen Antwortzeiten. Die Schmerzpunkte liegen eher bei Lead-Priorisierung und No-Show-Nachfassung als beim reinen Volumen manueller Arbeit.",
     decisionMakerContext:
-      "Jonas ist Vertriebsleiter, benötigt aber die Freigabe der beiden geschäftsführenden Gesellschafter für Ausgaben über 1.000 €/Monat.",
+      "Erika Musterfrau ist im Demo-Szenario fachliche Ansprechpartnerin und benötigt die Freigabe der fiktiven Geschäftsführung für Ausgaben über 1.000 €/Monat.",
     processMaturity: "medium",
     salesPriority: "medium",
     salesAngle:
@@ -198,11 +199,11 @@ const maierPartner = buildAudit({
   status: "in_review",
   createdAt: "2026-04-22T09:00:00.000Z",
   company: {
-    name: "Maier & Partner Immobilien",
-    location: "Essen",
-    website: "https://maier-partner-immobilien.de",
+    name: "Beispiel & Partner Immobilien",
+    location: "Musterhausen",
+    website: "https://beispiel-partner.example.com",
     employeeCount: 5,
-    contactName: "Sabine Maier",
+    contactName: "Alex Beispiel",
     contactRole: "Inhaberin",
   },
   leadSituation: {
@@ -235,13 +236,13 @@ const maierPartner = buildAudit({
   ],
   consultantAssessment: {
     discoveryNotes:
-      "Gespräch mit Sabine Maier (Inhaberin). Sehr manueller Betrieb — kein CRM, Koordination per Telefon, hohe No-Show-Rate. Höchstes Automatisierungspotenzial in der Pipeline, aber auch das kleinste Team und vermutlich das kleinste Budget.",
+      "Fiktives Demo-Gespräch mit Alex Beispiel (Inhaberin). Sehr manueller Betrieb — kein CRM, Koordination per Telefon, hohe No-Show-Rate. Höchstes Automatisierungspotenzial in der Pipeline, aber auch das kleinste Team und vermutlich das kleinste Budget.",
     decisionMakerContext:
-      "Sabine Maier ist alleinige Inhaberin und entscheidet allein, ist jedoch preissensibel — hat die Kosten im Gespräch zweimal als Bedenken angesprochen.",
+      "Alex Beispiel ist im Demo-Szenario alleinige Inhaberin und entscheidet allein, ist jedoch preissensibel — Kosten wurden als fiktives Bedenken aufgenommen.",
     processMaturity: "low",
     salesPriority: "medium",
     salesAngle:
-      "Das Angebot auf die persönliche Zeitersparnis von Sabine ausrichten, nicht auf Team-Effizienz — sie ist bei den meisten Prozessen noch selbst operativ eingebunden.",
+      "Das Angebot auf die persönliche Zeitersparnis der fiktiven Inhaberin ausrichten, nicht auf Team-Effizienz — sie ist bei den meisten Prozessen noch selbst operativ eingebunden.",
     recommendedNextStep:
       "Interne Prüfung: schlankeres Paket festlegen, bevor ein Preis genannt wird.",
   },
@@ -256,11 +257,11 @@ const stadtvilla = buildAudit({
   status: "draft",
   createdAt: "2026-03-11T09:00:00.000Z",
   company: {
-    name: "Stadtvilla Makler GmbH",
-    location: "Dortmund",
-    website: "https://stadtvilla-makler.de",
+    name: "Stadtvilla Demo-Makler GmbH",
+    location: "Demohausen",
+    website: "https://stadtvilla.example.com",
     employeeCount: 22,
-    contactName: "Tobias Krüger",
+    contactName: "Nora Demo",
     contactRole: "Teamleiter Vertrieb",
   },
   leadSituation: {
@@ -282,9 +283,9 @@ const stadtvilla = buildAudit({
   ],
   consultantAssessment: {
     discoveryNotes:
-      "Erstgespräch mit Tobias Krüger (Teamleiter Vertrieb). Größtes Team (22 Mitarbeiter), nutzt bereits Propstack mit solider Automatisierung. Kaum verbleibende Schmerzpunkte — Audit diente vor allem zum Benchmarking des bestehenden Setups.",
+      "Fiktives Demo-Erstgespräch mit Nora Demo (Teamleitung Vertrieb). Größtes Team (22 Mitarbeiter), nutzt bereits Propstack mit solider Automatisierung. Kaum verbleibende Schmerzpunkte — Audit diente vor allem zum Benchmarking des bestehenden Setups.",
     decisionMakerContext:
-      "Tobias ist nicht der finale Entscheider — bräuchte bei einem überzeugenden Angebot die Zustimmung der geschäftsführenden Gesellschafter.",
+      "Nora Demo ist nicht die finale Entscheiderin — sie bräuchte im Demo-Szenario bei einem überzeugenden Angebot die Zustimmung der fiktiven Geschäftsführung.",
     processMaturity: "high",
     salesPriority: "low",
     salesAngle:

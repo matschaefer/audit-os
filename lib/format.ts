@@ -3,18 +3,22 @@
 const locale = "de-DE";
 
 export function formatNumber(value: number, fractionDigits = 0): string {
+  const safeValue = Number.isFinite(value) ? value : 0;
+
   return new Intl.NumberFormat(locale, {
     minimumFractionDigits: fractionDigits,
     maximumFractionDigits: fractionDigits,
-  }).format(value);
+  }).format(safeValue);
 }
 
 export function formatCurrencyEur(value: number): string {
+  const safeValue = Number.isFinite(value) ? value : 0;
+
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency: "EUR",
     maximumFractionDigits: 0,
-  }).format(value);
+  }).format(safeValue);
 }
 
 export function formatPercent(value: number): string {

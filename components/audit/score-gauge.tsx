@@ -23,9 +23,16 @@ export function ScoreGauge({
   const offset = CIRCUMFERENCE - (clamped / 100) * CIRCUMFERENCE;
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div
+      className="flex flex-col items-center gap-3"
+      role="progressbar"
+      aria-label={`${label}: ${Math.round(clamped)} von 100`}
+      aria-valuenow={Math.round(clamped)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    >
       <div className="relative" style={{ width: SIZE, height: SIZE }}>
-        <svg width={SIZE} height={SIZE} className="-rotate-90">
+        <svg width={SIZE} height={SIZE} className="-rotate-90" aria-hidden="true">
           <circle
             cx={SIZE / 2}
             cy={SIZE / 2}

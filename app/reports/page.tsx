@@ -10,16 +10,16 @@ export default function ReportsPage() {
 
   return (
     <AppShell
-      title="Reports"
-      description="Kundenfähige Reports aus abgeschlossenen Audits, bereit zum Versand oder Follow-up."
+      title="Berichte"
+      description="Kundenfähige Berichte aus abgeschlossenen Audits, bereit zum Versand oder Follow-up."
     >
       {reports.length === 0 ? (
         <Card className="flex flex-col items-center justify-center gap-2 p-12 text-center">
           <p className="text-sm font-medium text-brand-dark">
-            Noch keine Reports bereit
+            Noch keine Berichte bereit
           </p>
           <p className="max-w-sm text-sm text-muted-foreground">
-            Reports erscheinen hier, sobald ein Audit den Status
+            Berichte erscheinen hier, sobald ein Audit den Status
             &bdquo;Report bereit&ldquo; erreicht.
           </p>
         </Card>
