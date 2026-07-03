@@ -2,9 +2,17 @@
 
 **Internal automation audit workspace for real estate agencies.**
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-audit--os.vercel.app-blue)](https://audit-os.vercel.app)
+
 Audit OS is a fullstack-ready portfolio project that demonstrates how an internal consulting tool can be used to prepare automation audits, evaluate process inefficiencies, calculate ROI potential, recommend suitable service packages and generate client-ready report previews.
 
 The public version of this project is a **privacy-safe demo** using fictional data only.
+
+## Live Demo
+
+[View the public demo](https://audit-os.vercel.app)
+
+Demo mode is publicly accessible and uses fictional data only. No real customer data is stored or processed.
 
 ---
 
@@ -133,7 +141,7 @@ Sections include:
 
 ### Public Demo / Private App Modes
 
-The app is designed with two deployment modes:
+The app is designed with two deployment modes.
 
 #### Public Demo
 
